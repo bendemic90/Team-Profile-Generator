@@ -1,13 +1,13 @@
 const Engineer = require('../lib/Engineer');
-//const Employee = require('../lib/Employee');
 
-describe("Engineer", () => {
-    describe("getName", () => {
-        it("should return the name of the engineer", () => {
-            const name = "Thomas";
-            const result = new Engineer("Thomas");
+test("should return the name of the engineer", () => {
+    const name = "Thomas";
+    const result = new Engineer("Thomas");
 
-            expect(result.name).toEqual(name);
-        })
+    expect(result.name).toEqual(name);
     })
+test("should be an object when instantiated", () => {
+    const x = new Engineer();
+
+    expect(typeof(x)).toBe("object");
 })
