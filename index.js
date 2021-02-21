@@ -1,13 +1,18 @@
 const inquirer = require('inquirer');
 const fs = require('fs');
-var output = [];
 
-const menuQuestion = {
-  type: 'choice',
-  name: 'continue',
-  message: 'Do you wish to continue adding members?',
-  choices: ['Yes', 'No']
+const Xask = () => {
+  inquirer.prompt(askAgain);
 }
+
+const askAgain = [
+  {
+    type: 'list',
+    name: 'askAgain',
+    message: 'Which type of member would you like to add?',
+    choices: ['Engineer', 'Intern', 'No more additions to make'],
+  },
+];
 
 const initialQuestions = [
   {
@@ -30,13 +35,7 @@ const initialQuestions = [
     name: 'managerOffice',
     message: 'In which office does your manager reside?',
   },
-  {
-    type: 'list',
-    name: 'askAgain',
-    message: 'Which type of member would you like to add?',
-    choices: ['Engineer', 'Intern', 'No more additions to make'],
-    default: 'No more additions to make',
-  },
+ 
 ];
 
 const engineerQuestions = [
@@ -85,21 +84,20 @@ const internQuestions = [
   },
 ]
 
-// generateTeam = (data) => {
-//   fs.appendFile(data);
-// }
-
-ask = () => {
+const ask = () => {
   inquirer.prompt(initialQuestions)
-  .then((answers) => {
-    if (answers.askAgain === 'No more additions to make') {
-      console.log(`done writing`);
-    } else if (answers.askAgain === 'Engineer') {
-      return inquirer.prompt(engineerQuestions);
-    } else if (answers.askAgain === 'Intern') {
-      return inquirer.prompt(internQuestions);
-    }
-  });
+    .then((answers) => {Xask()})
+    .then((answers) => {
+      if (answers === 'Engineer')
+      inquirer.prompt(engineerQuestions)
+    })
+    .catch((err) => console.error(err));
 }
 
 ask();
+
+const generateHTML = (answers) => 
+`
+${answers}
+`
+
