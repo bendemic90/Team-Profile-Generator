@@ -1,20 +1,26 @@
+const Manager = require("./lib/Manager");
+const Engineer = require("./lib/Engineer");
+const Intern = require("./lib/Intern");
 const inquirer = require('inquirer');
 const fs = require('fs');
 
-const Xask = () => {
-  inquirer.prompt(askAgain);
-}
+const team = [];
 
-const askAgain = [
-  {
+const askAgain = () => {
+  inquirer.prompt({
     type: 'list',
-    name: 'askAgain',
+    name: 'method',
     message: 'Which type of member would you like to add?',
     choices: ['Engineer', 'Intern', 'No more additions to make'],
-  },
-];
+  })
+  .then((data) => {
+    return data.method;
+  })
+};
 
-const initialQuestions = [
+const managerQ = () => {
+  return new Promise((resolve, reject) => {
+    inquirer.prompt([
   {
     type: 'input',
     name: 'manager',
@@ -34,11 +40,17 @@ const initialQuestions = [
     type: 'input',
     name: 'managerOffice',
     message: 'In which office does your manager reside?',
-  },
- 
-];
-
-const engineerQuestions = [
+  }
+]).then((answers) => {
+  const newManager = new Manager(answers.manager, answers.managerID, answers.managerEmail, answers.managerOffice)
+  team.push(newManager);
+  resolve();
+})
+  })
+}
+const engineerQuestions = () => { 
+  return new Promise ((resolve, reject) => {
+  inquirer.prompt([
   {
     type: 'input',
     name: 'engineerName',
@@ -59,9 +71,17 @@ const engineerQuestions = [
     name: 'engineerGithub',
     message: 'What is the engineers github account?'
   },
-]
+]).then((answers) => {
+  const newEngineer = new Engineer(answers.engineerName, answers.engineerID, answers.engineerEmail, answers.engineerGithub)
+  team.push(newEngineer);
+  resolve()
+})
+  })
+};
 
-const internQuestions = [
+const internQuestions = () => {
+  return new Promise((resolve, reject) => {
+inquirer.prompt([
   {
     type: 'input',
     name: 'internName',
@@ -82,14 +102,23 @@ const internQuestions = [
     name: 'internSchool',
     message: 'What school does the intern attend?'
   },
-]
+]).then((answers) => {
+  const newIntern = new Intern(answers.internName, answers.internID, answers.internEmail, answers.internSchool)
+  team.push(newIntern);
+  resolve();
+})
+  })
+};
+
+
 
 const ask = () => {
-  inquirer.prompt(initialQuestions)
-    .then((answers) => {Xask()})
-    .then((answers) => {
-      if (answers === 'Engineer')
-      inquirer.prompt(engineerQuestions)
+  managerQ()
+    .then(() => { 
+      askAgain()
+    })
+    .then(() => {
+      
     })
     .catch((err) => console.error(err));
 }
