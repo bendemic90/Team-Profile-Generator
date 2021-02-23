@@ -6,50 +6,57 @@ const fs = require('fs');
 
 const team = [];
 
-const askAgain = () => {
-  inquirer.prompt({
+function askAgain() {
+  inquirer.prompt([
+    {
     type: 'list',
     name: 'method',
     message: 'Which type of member would you like to add?',
     choices: ['Engineer', 'Intern', 'No more additions to make'],
+    }
+  ])
+  .then((answers) => {
+    switch (answers.method) {
+      case 'Engineer':
+        return engineerQuestions();
+      case 'Intern':
+        return internQuestions();
+      case 'No more additions to make':
+        return generateHTML(answers);
+    }
   })
-  .then((data) => {
-    return data.method;
-  })
-};
+}
 
 const managerQ = () => {
-  return new Promise((resolve, reject) => {
-    inquirer.prompt([
-  {
+  inquirer.prompt([
+    {
     type: 'input',
     name: 'manager',
     message: "What is your team managers name?",
-  },
-  {
+    },
+    {
     type: 'input',
     name: 'managerID',
     message: "What is your team managers ID?",
-  },
-  {
+    },
+    {
     type: 'input',
     name: 'managerEmail',
     message: 'What is your team managers email address?'
-  },
-  {
+    },
+    {
     type: 'input',
     name: 'managerOffice',
     message: 'In which office does your manager reside?',
-  }
+    }
 ]).then((answers) => {
   const newManager = new Manager(answers.manager, answers.managerID, answers.managerEmail, answers.managerOffice)
   team.push(newManager);
-  resolve();
+  askAgain();
 })
-  })
 }
+
 const engineerQuestions = () => { 
-  return new Promise ((resolve, reject) => {
   inquirer.prompt([
   {
     type: 'input',
@@ -74,13 +81,12 @@ const engineerQuestions = () => {
 ]).then((answers) => {
   const newEngineer = new Engineer(answers.engineerName, answers.engineerID, answers.engineerEmail, answers.engineerGithub)
   team.push(newEngineer);
-  resolve()
+  askAgain();
 })
-  })
 };
 
 const internQuestions = () => {
-  return new Promise((resolve, reject) => {
+
 inquirer.prompt([
   {
     type: 'input',
@@ -105,28 +111,12 @@ inquirer.prompt([
 ]).then((answers) => {
   const newIntern = new Intern(answers.internName, answers.internID, answers.internEmail, answers.internSchool)
   team.push(newIntern);
-  resolve();
+  askAgain();
 })
-  })
 };
 
-
-
-const ask = () => {
-  managerQ()
-    .then(() => { 
-      askAgain()
-    })
-    .then(() => {
-      
-    })
-    .catch((err) => console.error(err));
+const generateHTML = (answers) => {
+  console.log(team);
 }
 
-ask();
-
-const generateHTML = (answers) => 
-`
-${answers}
-`
-
+managerQ();
