@@ -116,6 +116,7 @@ inquirer.prompt([
 };
 
 const generateHTML = () => {
+  console.log(team);
   const newTeam = JSON.stringify(team)
   fs.writeFile('team.json', newTeam, function (err) {    
     if (err) throw err;

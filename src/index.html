@@ -9,7 +9,7 @@
 </head>
 <body>
     <div class="container-fluid">
-        <div class="jumbotron">
+        <div class="jumbotron text-center">
             <h1 class="display-4">Team Generator</h1>
             <p class="lead">See and access your team easily.</p>
           </div>
@@ -32,7 +32,17 @@
             var container = document.getElementById("data");
             for (var i = 0; i < data.length; i++) {
                 var div = document.createElement("div");
-                div.innerHTML = '<b>Name: </b>' + data[i].name + ' --- ' + '<b>Email: </b>' + data[i].email;
+                div.setAttribute("class", "text-center")
+                div.innerHTML = 
+                '<h2><b>Name: </b>' 
+                + data[i].name 
+                + ' '
+                + '<b>Email: </b>' 
+                + `<a href="mailto:${data[i].email}"> ${data[i].name}</a>`
+                + ' '  
+                + '<b>Github: </b>'
+                + `<a href="github.com/${data[i].github}">Github</a> `
+                + '<hr></h2>';
                 container.appendChild(div);
             }
         }
