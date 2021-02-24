@@ -115,8 +115,12 @@ inquirer.prompt([
 })
 };
 
-const generateHTML = (answers) => {
-  console.log(team);
+const generateHTML = () => {
+  const newTeam = JSON.stringify(team)
+  fs.writeFile('team.json', newTeam, function (err) {    
+    if (err) throw err;
+    console.log(`Written successfully!`)
+  })
 }
 
 managerQ();

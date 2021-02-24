@@ -8,6 +8,34 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 </head>
 <body>
-    
+    <div class="container-fluid">
+        <div class="jumbotron">
+            <h1 class="display-4">Team Generator</h1>
+            <p class="lead">See and access your team easily.</p>
+          </div>
+        <div id="data">
+        </div>
+    </div>
+    <script>
+        fetch('../team.json')
+            .then(function (response) {
+                return response.json();
+            })
+            .then(function (data) {
+                appendData(data);
+            })
+            .catch(function (err) {
+                console.log(err);
+            })
+
+        function appendData(data) {
+            var container = document.getElementById("data");
+            for (var i = 0; i < data.length; i++) {
+                var div = document.createElement("div");
+                div.innerHTML = '<b>Name: </b>' + data[i].name + ' --- ' + '<b>Email: </b>' + data[i].email;
+                container.appendChild(div);
+            }
+        }
+    </script>
 </body>
 </html>

@@ -12,3 +12,5 @@ test("should be an object when instantiated", () => {
 
     expect(typeof(x)).toBe("object");
 })
+
+test
